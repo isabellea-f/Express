@@ -5,22 +5,27 @@ router.get("/", (req, res) => {
   res.send("User list");
 });
 
-router.get("/new", (req, res) => {
-  res.send("User New Form");
-});
-
-//Create new user
 router.post("/", (req, res) => {
   res.send("Create user");
 });
 
-//access user based on id of user
-//route dynamically determined by the url
-router.get("/:id", (req, res) => {
-  //access parameter
-  req.params.id;
-  res.send(`Get user with id ${req.params.id}`);
-});
+router
+  .route("/:id")
+  .get((req, res) => {
+    console.log(req.user);
+    res.send(`Get user with id ${req.params.id}`);
+  })
+  .put((req, res) => {
+    res.send(`Get user with id ${req.params.id}`);
+  })
+  .delete((req, res) => {
+    res.send(`Get user with id ${req.params.id}`);
+  });
 
-//export router
+const users = [{ name: "Kyle" }, { name: "Sally" }];
+//Runs any time it finds a param that matches the name you pass in
+router.param("id", (req, res, next, id) => {
+  req.user = users[id];
+  next();
+});
 module.exports = router;
